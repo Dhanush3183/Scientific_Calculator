@@ -1,0 +1,1709 @@
+/* CSS Variables & Design Tokens */
+:root {
+  --font-primary: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Light Glassmorphic Colors */
+  --bg-app: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  --bg-sidebar: rgba(255, 255, 255, 0.85);
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: rgba(255, 255, 255, 0.94);
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(99, 102, 241, 0.6);
+  
+  /* Text Colors */
+  --text-main: #1f2937; /* Darker main text for better readability */
+  --text-muted: #4b5563; /* Darker muted text */
+  --text-light: #ffffff;
+  
+  /* Accent Colors (Pastel to Semi-Vibrant) */
+  --accent-primary: #4f46e5; /* Slightly deeper indigo */
+  --accent-primary-hover: #4338ca;
+  --accent-secondary: #0891b2; /* Slightly deeper cyan */
+  --accent-success: #059669; /* Slightly deeper emerald */
+  --accent-warning: #d97706; /* Slightly deeper amber */
+  --accent-danger: #dc2626; /* Slightly deeper rose */
+  
+  /* Button Specific Colors */
+  --btn-num-bg: rgba(255, 255, 255, 0.92);
+  --btn-num-text: #1f2937;
+  --btn-op-bg: rgba(79, 70, 229, 0.1);
+  --btn-op-text: #4f46e5;
+  --btn-func-bg: rgba(220, 38, 38, 0.08);
+  --btn-func-text: #dc2626;
+  --btn-equals-bg: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  --btn-equals-shadow: rgba(79, 70, 229, 0.3);
+  
+  /* Shadows & Radius */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 12px 36px -4px rgba(27, 38, 75, 0.09), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 24px 48px -8px rgba(27, 38, 75, 0.14), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  --transition-normal: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.12s ease;
+}
+
+/* Alternative 'Vibrant Magic' Accent Theme (Toggled via Magic Wand button) */
+body.magic-theme {
+  --bg-app: linear-gradient(135deg, #fbf0f3 0%, #e2eafc 50%, #e6f8f9 100%);
+  --accent-primary: #ec4899; /* Pink */
+  --accent-primary-hover: #db2777;
+  --btn-op-bg: rgba(236, 72, 153, 0.12);
+  --btn-op-text: #db2777;
+  --btn-equals-bg: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  --btn-equals-shadow: rgba(236, 72, 153, 0.35);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  transition: background 0.5s ease;
+}
+
+/* Layout container */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorator Background Blobs for Visual depth */
+body::before, body::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  opacity: 0.45;
+  pointer-events: none;
+}
+body::before {
+  top: 10%;
+  left: 15%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(255,255,255,0) 70%);
+}
+body::after {
+  bottom: 10%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, rgba(255,255,255,0) 70%);
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 280px;
+  background: var(--bg-sidebar);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-right: 1px solid var(--border-glass);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(31, 38, 135, 0.02);
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.logo-text {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Custom scrollbar for sidebar navigation menu */
+.nav-menu::-webkit-scrollbar {
+  width: 4px;
+}
+.nav-menu::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  position: relative;
+}
+
+.nav-item i {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--text-main);
+}
+
+.nav-item.active {
+  background: var(--text-light);
+  color: var(--accent-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 4px;
+  background: var(--accent-primary);
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-item.active i {
+  color: var(--accent-primary);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Main Content Workspace */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header bar */
+.top-header {
+  height: 72px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-glass);
+  z-index: 50;
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 8px;
+}
+
+.current-module-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.btn-theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.btn-theme-toggle:hover {
+  transform: rotate(15deg) scale(1.05);
+  background: var(--bg-card-hover);
+}
+
+/* Cards & Panel Layout */
+.panel-container {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.calc-panel {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  height: 100%;
+}
+
+.calc-panel.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* General Layout Card styles */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-card-hover);
+}
+
+/* MODULE 1: GENERAL CALCULATOR LAYOUT */
+.general-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  height: 100%;
+  align-items: start;
+}
+
+.calculator-core {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Display Screen */
+.display-container {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.history-preview {
+  font-size: 1rem;
+  color: var(--text-muted);
+  min-height: 1.5em;
+  word-break: break-all;
+  text-align: right;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.display-main {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  word-break: break-all;
+  text-align: right;
+  width: 100%;
+  line-height: 1.2;
+}
+
+.display-cursor {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 2px;
+  height: 2.25rem;
+  background: var(--accent-primary);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Layout Keypad Switcher Tabs */
+.keypad-layout-tabs {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+}
+
+.keypad-tab {
+  border: none;
+  background: transparent;
+  padding: 6px 16px;
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.keypad-tab.active {
+  background: var(--text-light);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Grids for Keypads */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.basic-pad {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.keypad-grid.hidden {
+  display: none;
+}
+
+/* Buttons Styling */
+.btn {
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  height: 52px;
+  font-family: var(--font-primary);
+  font-size: 1.15rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+.btn:active, .btn.keyboard-pressed {
+  transform: scale(0.94);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Button Classes */
+.btn-num {
+  background: var(--btn-num-bg);
+  color: var(--btn-num-text);
+}
+.btn-num:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.btn-op {
+  background: var(--btn-op-bg);
+  color: var(--btn-op-text);
+}
+.btn-op:hover {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.btn-func {
+  background: var(--btn-func-bg);
+  color: var(--btn-func-text);
+}
+.btn-func:hover {
+  background: rgba(244, 63, 94, 0.18);
+}
+
+.btn-action.equals {
+  background: var(--btn-equals-bg);
+  color: var(--text-light);
+  box-shadow: 0 4px 14px var(--btn-equals-shadow);
+  border: none;
+}
+.btn-action.equals:hover {
+  opacity: 0.95;
+  box-shadow: 0 6px 18px var(--btn-equals-shadow);
+}
+
+.btn-num.zero {
+  grid-column: span 2;
+}
+
+.btn sub, .btn sup {
+  font-size: 0.65em;
+  margin-left: 1px;
+}
+
+/* History Sidebar inside card */
+.calculator-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+}
+
+.calculator-sidebar h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.history-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 4px;
+}
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.06);
+  border-radius: 10px;
+}
+
+.no-history {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.history-item {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  text-align: right;
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateX(-2px);
+  border-color: var(--accent-primary);
+}
+
+.hist-expr {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+  word-break: break-all;
+}
+
+.hist-res {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  word-break: break-all;
+}
+
+.btn-clear-history {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px dashed rgba(239, 68, 68, 0.35);
+  color: var(--accent-danger);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: var(--transition-normal);
+}
+
+.btn-clear-history:hover {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: var(--accent-danger);
+}
+
+/* GENERAL MODULE FORMS & INPUTS styling */
+.form-select, .form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(248, 250, 252, 0.95); /* Light distinct background */
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  transition: var(--transition-normal);
+  outline: none;
+}
+
+.form-select:focus, .form-control:focus {
+  border-color: var(--accent-primary);
+  background: var(--text-light);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+/* Buttons style standard */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #4f46e5 100%);
+  color: var(--text-light);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  transition: var(--transition-normal);
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--text-light);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--text-muted);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Solution Display */
+.solution-display {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+.solution-display h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--accent-primary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 8px;
+}
+
+.solution-content {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.solution-step {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-primary);
+}
+
+.solution-final {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #065f46;
+}
+
+.solution-display.hidden {
+  display: none;
+}
+
+/* MODULE 2: EQUATION SOLVER UI */
+.solver-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.solver-type-selector {
+  max-width: 400px;
+}
+
+.eq-input-section {
+  padding: 12px 0;
+}
+
+.eq-coeff-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.coeff-field-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coeff-field-group input {
+  width: 70px;
+  text-align: center;
+  padding: 8px;
+}
+
+.coeff-term {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.solve-action-bar {
+  margin-top: 8px;
+}
+
+/* Linear system rows solver grid */
+.linear-eqs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linear-eq-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.linear-eq-row input {
+  width: 65px;
+  text-align: center;
+  padding: 6px;
+}
+
+/* MODULE 3: MATRIX CALCULATOR UI */
+.matrix-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.matrix-config {
+  display: flex;
+  gap: 24px;
+}
+
+.size-select {
+  width: 100px;
+  display: inline-block;
+}
+
+.matrices-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.matrix-wrapper {
+  background: rgba(255, 255, 255, 0.35);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.matrix-wrapper h5 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.matrix-grid {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.matrix-grid input {
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+.matrix-grid input:focus {
+  border-color: var(--accent-primary);
+  outline: none;
+  background: var(--text-light);
+}
+
+.matrix-quick-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.matrix-operations {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 16px;
+  border-radius: var(--radius-md);
+}
+
+.operation-category h6 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.op-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Result matrix styles */
+.result-matrix {
+  display: inline-grid;
+  gap: 8px;
+  padding: 10px;
+  border-left: 2px solid var(--accent-primary);
+  border-right: 2px solid var(--accent-primary);
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.result-cell {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 8px 12px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 4px;
+  min-width: 50px;
+}
+
+/* MODULE 4: CALCULUS UI */
+.calculus-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calculus-type-selector {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+}
+
+.calc-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calc-tab.active {
+  background: var(--text-light);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.calculus-sub-panel {
+  padding: 16px 0;
+}
+
+.calculus-sub-panel.hidden {
+  display: none;
+}
+
+/* Visual math layout for integral symbol */
+.integral-symbol-layout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.limit-top, .limit-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.limit-top input, .limit-bottom input {
+  width: 45px;
+  text-align: center;
+  padding: 4px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-glass);
+}
+
+.integral-sign {
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--accent-primary);
+  margin: 0 4px;
+}
+
+.integrand-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.integrand-field {
+  width: 250px !important;
+  font-size: 1.1rem !important;
+}
+
+.differential {
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Derivative layout elements */
+.derivative-layout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.d-notation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.frac-top {
+  padding-bottom: 2px;
+}
+.frac-line {
+  width: 35px;
+  height: 2px;
+  background: var(--text-main);
+}
+.frac-bottom {
+  padding-top: 2px;
+}
+
+.deriv-inputs {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.deriv-inputs input[type="text"] {
+  width: 220px;
+}
+
+.at-point, .order-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+}
+
+.small-val {
+  width: 60px !important;
+  text-align: center;
+  padding: 4px !important;
+}
+
+/* Limit layout */
+.limit-layout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lim-symbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.lim-symbol span {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.lim-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.lim-sub input {
+  width: 40px !important;
+  text-align: center;
+  padding: 2px !important;
+  font-size: 0.75rem;
+}
+
+.limit-layout input[type="text"] {
+  width: 280px;
+}
+
+/* Series grid */
+.series-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.series-selector-row {
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.series-grid {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  align-self: flex-start;
+}
+
+.series-top-bound {
+  grid-column: 1;
+  text-align: center;
+}
+
+.series-top-bound input, .series-bottom-bound input {
+  width: 50px;
+  text-align: center;
+  padding: 4px;
+}
+
+.series-symbol {
+  grid-column: 1;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--accent-primary);
+  text-align: center;
+}
+
+.series-bottom-bound {
+  grid-column: 1;
+  text-align: center;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.series-expr-container {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  padding-left: 8px;
+}
+
+.series-expr-container input {
+  width: 200px;
+}
+
+/* MODULE 5: VECTOR CALCULATOR UI */
+.vector-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vector-dimension-select {
+  display: flex;
+  gap: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.vector-grids {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.vector-box {
+  background: rgba(255, 255, 255, 0.35);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.vector-inputs {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.vector-inputs span {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.vector-inputs input {
+  width: 60px;
+  text-align: center;
+}
+
+.vector-operations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* MODULE 6: STATS & PROBABILITY UI */
+.stats-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stats-type-selector {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+}
+
+.stats-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.stats-tab.active {
+  background: var(--text-light);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.stats-sub-panel {
+  padding: 10px 0;
+}
+
+.stats-sub-panel.hidden {
+  display: none;
+}
+
+.prob-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-top: 12px;
+}
+
+.prob-field-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prob-field-group input {
+  width: 80px;
+  text-align: center;
+}
+
+.comb-inputs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.input-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comb-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* MODULE 7: BASE CONVERTER UI */
+.base-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.base-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.bitwise-section {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.bitwise-section h5 {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.bitwise-inputs {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bitwise-inputs input {
+  width: 140px;
+}
+
+.bitwise-inputs select {
+  width: 200px;
+}
+
+.base-results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.base-results-table th, .base-results-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.base-results-table th {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.base-results-table td.code-val {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+/* MODULE 8: COMPLEX NUMBERS UI */
+.complex-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.complex-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.complex-number-block {
+  background: rgba(255, 255, 255, 0.35);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.complex-number-block h5 {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.rect-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rect-inputs span {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.complex-operations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* MODULE 9: FINANCIAL CALCULATOR UI */
+.finance-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.finance-type-selector {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+}
+
+.finance-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.finance-tab.active {
+  background: var(--text-light);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.finance-sub-panel {
+  padding: 10px 0;
+}
+
+.finance-sub-panel.hidden {
+  display: none;
+}
+
+.finance-grid-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Amortization schedule styling */
+.amort-table-wrapper {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-top: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.amort-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.amort-table th, .amort-table td {
+  padding: 8px 10px;
+  text-align: right;
+}
+
+.amort-table th {
+  background: rgba(0, 0, 0, 0.02);
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+}
+
+.amort-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* MODULE 10: UNIT CONVERTER UI */
+.unit-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.unit-type-select {
+  max-width: 350px;
+}
+
+.unit-grid-io {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.unit-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.unit-selector {
+  margin-top: 4px;
+}
+
+.unit-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--text-light);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-sm);
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+}
+
+/* MODULE 11: FUNCTION GRAPHER UI */
+.grapher-layout {
+  padding: 20px !important;
+}
+
+.grapher-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  height: 520px;
+}
+
+.graph-inputs-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.graph-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 4px solid var(--accent-color);
+  padding-left: 8px;
+}
+
+.fn-label {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.graph-controls {
+  margin-top: 10px;
+}
+
+.zoom-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.zoom-buttons button {
+  padding: 8px !important;
+  font-size: 0.75rem;
+}
+
+.zoom-buttons button:last-child {
+  grid-column: span 2;
+}
+
+.graph-legend {
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+}
+
+.graph-legend p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.graph-canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+  background: #ffffff;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+#graphCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.coords-display {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
+/* RESPONSIVENESS MEDIA QUERIES */
+
+/* Scrollbar styling general */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .general-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .calculator-sidebar {
+    height: 350px;
+  }
+  .matrices-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .matrix-operations {
+    grid-template-columns: 1fr;
+  }
+  .grapher-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .graph-canvas-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 72px;
+    height: calc(100vh - 72px);
+    width: 260px;
+    transform: translateX(-100%);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  .menu-toggle {
+    display: block;
+  }
+  
+  .top-header {
+    padding: 0 16px;
+  }
+  
+  .panel-container {
+    padding: 16px;
+  }
+  
+  .vector-grids {
+    grid-template-columns: 1fr;
+  }
+  
+  .complex-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .base-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .unit-grid-io {
+    grid-template-columns: 1fr;
+  }
+  .unit-arrow {
+    transform: rotate(90deg);
+    margin: 4px auto;
+  }
+  
+  .keypad-grid {
+    gap: 6px;
+  }
+  
+  .btn {
+    height: 48px;
+    font-size: 1.05rem;
+  }
+}

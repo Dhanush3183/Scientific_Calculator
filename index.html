@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniMath | Premium Scientific Calculator & Math Suite</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons for sidebar and UI -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- MathJS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-square-root-variable"></i>
+        </div>
+        <span class="logo-text">OmniMath</span>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-item active" data-target="general-calc">
+          <i class="fa-solid fa-calculator"></i>
+          <span>General Calculator</span>
+        </button>
+        <button class="nav-item" data-target="equation-solver">
+          <i class="fa-solid fa-equals"></i>
+          <span>Equation Solver</span>
+        </button>
+        <button class="nav-item" data-target="matrix-calc">
+          <i class="fa-solid fa-table-cells"></i>
+          <span>Matrix Calculator</span>
+        </button>
+        <button class="nav-item" data-target="calculus-solver">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Calculus & Series</span>
+        </button>
+        <button class="nav-item" data-target="vector-calc">
+          <i class="fa-solid fa-location-arrow"></i>
+          <span>Vector Calculator</span>
+        </button>
+        <button class="nav-item" data-target="stats-calc">
+          <i class="fa-solid fa-chart-bar"></i>
+          <span>Stats & Probability</span>
+        </button>
+        <button class="nav-item" data-target="base-conv">
+          <i class="fa-solid fa-binary"></i>
+          <span>Base Converter</span>
+        </button>
+        <button class="nav-item" data-target="complex-calc">
+          <i class="fa-solid fa-circle-dot"></i>
+          <span>Complex Numbers</span>
+        </button>
+        <button class="nav-item" data-target="finance-calc">
+          <i class="fa-solid fa-wallet"></i>
+          <span>Financial Calc</span>
+        </button>
+        <button class="nav-item" data-target="unit-conv">
+          <i class="fa-solid fa-arrows-spin"></i>
+          <span>Unit Converter</span>
+        </button>
+        <button class="nav-item" data-target="grapher">
+          <i class="fa-solid fa-bezier-curve"></i>
+          <span>Function Grapher</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>OmniMath v1.0</p>
+        <span>Premium Light Edition</span>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      <!-- Top header bar -->
+      <header class="top-header">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 class="current-module-title" id="moduleTitle">General Calculator</h1>
+        <div class="header-actions">
+          <button class="btn-theme-toggle" id="themeToggle" title="Toggle theme style">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Panel Area -->
+      <div class="panel-container">
+        
+        <!-- MODULE 1: GENERAL CALCULATOR -->
+        <section class="calc-panel active" id="general-calc">
+          <div class="general-grid">
+            <div class="calculator-core card">
+              <div class="display-container">
+                <div class="history-preview" id="generalHistoryPreview"></div>
+                <div class="display-main" id="generalDisplay">0</div>
+                <div class="display-cursor"></div>
+              </div>
+              
+              <!-- Keyboard layout selector for scientific vs basic on desktop/mobile -->
+              <div class="keypad-layout-tabs">
+                <button class="keypad-tab active" data-keypad="sci">Scientific</button>
+                <button class="keypad-tab" data-keypad="basic">Basic</button>
+              </div>
+
+              <!-- Scientific Keypad -->
+              <div class="keypad-grid scientific-pad" id="keypadScientific">
+                <!-- Row 1 -->
+                <button class="btn btn-func" data-val="clear">AC</button>
+                <button class="btn btn-func" data-val="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="btn btn-func" data-val="(">(</button>
+                <button class="btn btn-func" data-val=")">)</button>
+                <button class="btn btn-func" data-val="%">%</button>
+                
+                <!-- Row 2 -->
+                <button class="btn btn-op" data-val="sin(">sin</button>
+                <button class="btn btn-op" data-val="cos(">cos</button>
+                <button class="btn btn-op" data-val="tan(">tan</button>
+                <button class="btn btn-op" data-val="^">x<sup>y</sup></button>
+                <button class="btn btn-op" data-val="/">÷</button>
+                
+                <!-- Row 3 -->
+                <button class="btn btn-op" data-val="asin(">asin</button>
+                <button class="btn btn-op" data-val="acos(">acos</button>
+                <button class="btn btn-op" data-val="atan(">atan</button>
+                <button class="btn btn-op" data-val="sqrt(">√</button>
+                <button class="btn btn-op" data-val="*">×</button>
+                
+                <!-- Row 4 -->
+                <button class="btn btn-op" data-val="log10(">log</button>
+                <button class="btn btn-num" data-val="7">7</button>
+                <button class="btn btn-num" data-val="8">8</button>
+                <button class="btn btn-num" data-val="9">9</button>
+                <button class="btn btn-op" data-val="-">-</button>
+                
+                <!-- Row 5 -->
+                <button class="btn btn-op" data-val="log(">ln</button>
+                <button class="btn btn-num" data-val="4">4</button>
+                <button class="btn btn-num" data-val="5">5</button>
+                <button class="btn btn-num" data-val="6">6</button>
+                <button class="btn btn-op" data-val="+">+</button>
+                
+                <!-- Row 6 -->
+                <button class="btn btn-op" data-val="pi">π</button>
+                <button class="btn btn-num" data-val="1">1</button>
+                <button class="btn btn-num" data-val="2">2</button>
+                <button class="btn btn-num" data-val="3">3</button>
+                <button class="btn btn-action equals" data-val="equals">=</button>
+                
+                <!-- Row 7 -->
+                <button class="btn btn-op" data-val="e">e</button>
+                <button class="btn btn-op" data-val="phi">φ</button>
+                <button class="btn btn-num zero" data-val="0">0</button>
+                <button class="btn btn-num" data-val=".">.</button>
+              </div>
+
+              <!-- Basic Keypad (shown on toggle) -->
+              <div class="keypad-grid basic-pad hidden" id="keypadBasic">
+                <button class="btn btn-func" data-val="clear">AC</button>
+                <button class="btn btn-func" data-val="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="btn btn-func" data-val="parentheses">()</button>
+                <button class="btn btn-op" data-val="/">÷</button>
+
+                <button class="btn btn-num" data-val="7">7</button>
+                <button class="btn btn-num" data-val="8">8</button>
+                <button class="btn btn-num" data-val="9">9</button>
+                <button class="btn btn-op" data-val="*">×</button>
+
+                <button class="btn btn-num" data-val="4">4</button>
+                <button class="btn btn-num" data-val="5">5</button>
+                <button class="btn btn-num" data-val="6">6</button>
+                <button class="btn btn-op" data-val="-">-</button>
+
+                <button class="btn btn-num" data-val="1">1</button>
+                <button class="btn btn-num" data-val="2">2</button>
+                <button class="btn btn-num" data-val="3">3</button>
+                <button class="btn btn-op" data-val="+">+</button>
+
+                <button class="btn btn-num zero" data-val="0">0</button>
+                <button class="btn btn-num" data-val=".">.</button>
+                <button class="btn btn-action equals" data-val="equals">=</button>
+              </div>
+            </div>
+
+            <!-- History Panel / Constants Info -->
+            <div class="calculator-sidebar card">
+              <h3>Calculation History</h3>
+              <div class="history-list" id="generalHistoryList">
+                <div class="no-history">No calculations yet</div>
+              </div>
+              <button class="btn-clear-history" id="clearHistoryBtn">Clear History</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 2: EQUATION SOLVER -->
+        <section class="calc-panel" id="equation-solver">
+          <div class="solver-layout card">
+            <div class="solver-type-selector">
+              <label for="equationType">Select Equation Type:</label>
+              <select id="equationType" class="form-select">
+                <optgroup label="Polynomial Equations">
+                  <option value="quadratic" selected>Quadratic Equation (Degree 2)</option>
+                  <option value="cubic">Cubic Equation (Degree 3)</option>
+                  <option value="quartic">Quartic Equation (Degree 4)</option>
+                </optgroup>
+                <optgroup label="Systems of Linear Equations">
+                  <option value="linear2">2 Variables (x, y)</option>
+                  <option value="linear3">3 Variables (x, y, z)</option>
+                  <option value="linear4">4 Variables (x, y, z, w)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Equation Input Container -->
+            <div class="eq-input-section" id="eqInputSection">
+              <!-- Dynamically populated based on chosen type -->
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveEquation">
+                <i class="fa-solid fa-gears"></i> Solve Equation
+              </button>
+            </div>
+
+            <!-- Solution Output Container -->
+            <div class="solution-display card hidden" id="eqSolutionDisplay">
+              <h4>Solution Breakdown</h4>
+              <div class="solution-content" id="eqSolutionContent">
+                <!-- Solutions and steps here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 3: MATRIX CALCULATOR -->
+        <section class="calc-panel" id="matrix-calc">
+          <div class="matrix-layout card">
+            <div class="matrix-config">
+              <div class="config-group">
+                <label>Matrix A Size:</label>
+                <select id="matrixASize" class="form-select size-select">
+                  <option value="2">2 x 2</option>
+                  <option value="3" selected>3 x 3</option>
+                  <option value="4">4 x 4</option>
+                </select>
+              </div>
+              <div class="config-group">
+                <label>Matrix B Size:</label>
+                <select id="matrixBSize" class="form-select size-select">
+                  <option value="2">2 x 2</option>
+                  <option value="3" selected>3 x 3</option>
+                  <option value="4">4 x 4</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="matrices-container">
+              <div class="matrix-wrapper">
+                <h5>Matrix A</h5>
+                <div class="matrix-grid" id="matrixAGrid"></div>
+                <div class="matrix-quick-actions">
+                  <button class="btn-secondary btn-sm" id="btnMatrixAClear">Clear</button>
+                  <button class="btn-secondary btn-sm" id="btnMatrixAIdentity">Identity</button>
+                  <button class="btn-secondary btn-sm" id="btnMatrixARandom">Random</button>
+                </div>
+              </div>
+
+              <div class="matrix-wrapper">
+                <h5>Matrix B</h5>
+                <div class="matrix-grid" id="matrixBGrid"></div>
+                <div class="matrix-quick-actions">
+                  <button class="btn-secondary btn-sm" id="btnMatrixBClear">Clear</button>
+                  <button class="btn-secondary btn-sm" id="btnMatrixBIdentity">Identity</button>
+                  <button class="btn-secondary btn-sm" id="btnMatrixBRandom">Random</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operations Toolbar -->
+            <div class="matrix-operations">
+              <div class="operation-category">
+                <h6>Binary Operations (Uses A & B)</h6>
+                <div class="op-buttons">
+                  <button class="btn-primary" id="btnMatrixAdd">A + B</button>
+                  <button class="btn-primary" id="btnMatrixSub">A - B</button>
+                  <button class="btn-primary" id="btnMatrixMul">A × B</button>
+                </div>
+              </div>
+              
+              <div class="operation-category">
+                <h6>Unary Operations (A only)</h6>
+                <div class="op-buttons">
+                  <button class="btn-primary" id="btnMatrixDet">Determinant(A)</button>
+                  <button class="btn-primary" id="btnMatrixInv">Inverse(A)</button>
+                  <button class="btn-primary" id="btnMatrixTrans">Transpose(A)</button>
+                  <button class="btn-primary" id="btnMatrixRank">Rank(A)</button>
+                  <button class="btn-primary" id="btnMatrixEigen">Eigenvalues(A)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Matrix Result -->
+            <div class="solution-display card hidden" id="matrixSolutionDisplay">
+              <h4>Matrix Result</h4>
+              <div class="matrix-result-content" id="matrixResultContent">
+                <!-- Result matrices or numerical scalar values -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 4: CALCULUS & ADVANCED -->
+        <section class="calc-panel" id="calculus-solver">
+          <div class="calculus-layout card">
+            <div class="calculus-type-selector">
+              <button class="calc-tab active" data-calc="integral">
+                <i class="fa-solid fa-integral"></i> Definite Integral
+              </button>
+              <button class="calc-tab" data-calc="derivative">
+                <i class="fa-solid fa-wave-square"></i> Numerical Derivative
+              </button>
+              <button class="calc-tab" data-calc="limit">
+                <i class="fa-solid fa-chart-line"></i> Limit Solver
+              </button>
+              <button class="calc-tab" data-calc="series">
+                <i class="fa-solid fa-sigma"></i> Sigma / Pi Series
+              </button>
+            </div>
+
+            <!-- Panels for individual calculus functions -->
+            <div class="calculus-sub-panel active" id="calcIntegralPanel">
+              <div class="cal-math-input">
+                <div class="integral-symbol-layout">
+                  <div class="limit-top"><input type="text" id="intUpper" placeholder="b" value="1"></div>
+                  <div class="integral-sign">∫</div>
+                  <div class="limit-bottom"><input type="text" id="intLower" placeholder="a" value="0"></div>
+                  <div class="integrand-input-group">
+                    <input type="text" id="intExpr" placeholder="e.g. x^2" class="integrand-field" value="x^2">
+                    <span class="differential">dx</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calculus-sub-panel hidden" id="calcDerivativePanel">
+              <div class="derivative-layout">
+                <div class="d-notation">
+                  <div class="frac-top">d<sup><span id="derivOrderLabel"></span></sup></div>
+                  <div class="frac-line"></div>
+                  <div class="frac-bottom">dx<sup><span id="derivOrderPower"></span></sup></div>
+                </div>
+                <div class="deriv-inputs">
+                  <input type="text" id="derivExpr" placeholder="e.g., sin(x) * x" value="x^3 - 5x" class="form-control">
+                  <div class="at-point">
+                    <span>at x =</span>
+                    <input type="text" id="derivPoint" placeholder="x0" value="2" class="small-val">
+                  </div>
+                  <div class="order-select">
+                    <span>Order:</span>
+                    <select id="derivOrder" class="form-select small-val">
+                      <option value="1" selected>1st Derivative</option>
+                      <option value="2">2nd Derivative</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calculus-sub-panel hidden" id="calcLimitPanel">
+              <div class="limit-layout">
+                <div class="lim-symbol">
+                  <span>lim</span>
+                  <div class="lim-sub">x → <input type="text" id="limPoint" value="0" class="small-val"></div>
+                </div>
+                <input type="text" id="limExpr" placeholder="e.g., sin(x)/x" value="sin(x)/x" class="form-control">
+              </div>
+            </div>
+
+            <div class="calculus-sub-panel hidden" id="calcSeriesPanel">
+              <div class="series-layout">
+                <div class="series-selector-row">
+                  <label><input type="radio" name="seriesType" value="sum" checked> Summation (∑)</label>
+                  <label><input type="radio" name="seriesType" value="prod"> Product (∏)</label>
+                </div>
+                <div class="series-grid">
+                  <div class="series-top-bound">
+                    <input type="text" id="seriesUpper" placeholder="end" value="10">
+                  </div>
+                  <div class="series-symbol">∑</div>
+                  <div class="series-bottom-bound">
+                    <span>n =</span>
+                    <input type="text" id="seriesLower" placeholder="start" value="1">
+                  </div>
+                  <div class="series-expr-container">
+                    <input type="text" id="seriesExpr" placeholder="e.g., 1/n^2" value="n^2" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveCalculus">Calculate</button>
+            </div>
+
+            <div class="solution-display card hidden" id="calcSolutionDisplay">
+              <h4>Result</h4>
+              <div class="calc-result" id="calcResultContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 5: VECTOR CALCULATOR -->
+        <section class="calc-panel" id="vector-calc">
+          <div class="vector-layout card">
+            <div class="vector-dimension-select">
+              <label>Vector Dimension:</label>
+              <label><input type="radio" name="vectorDim" value="2"> 2D</label>
+              <label><input type="radio" name="vectorDim" value="3" checked> 3D</label>
+            </div>
+
+            <div class="vector-grids">
+              <div class="vector-box">
+                <h5>Vector U</h5>
+                <div class="vector-inputs" id="vectorUInputs">
+                  <!-- JS builds input boxes -->
+                </div>
+              </div>
+              <div class="vector-box">
+                <h5>Vector V</h5>
+                <div class="vector-inputs" id="vectorVInputs">
+                  <!-- JS builds input boxes -->
+                </div>
+              </div>
+            </div>
+
+            <div class="vector-operations">
+              <button class="btn-primary" id="btnVecAdd">U + V</button>
+              <button class="btn-primary" id="btnVecSub">U - V</button>
+              <button class="btn-primary" id="btnVecDot">Dot Product (U · V)</button>
+              <button class="btn-primary" id="btnVecCross">Cross Product (U × V)</button>
+              <button class="btn-primary" id="btnVecMag">Magnitudes</button>
+              <button class="btn-primary" id="btnVecAngle">Angle Between</button>
+              <button class="btn-primary" id="btnVecProj">Projection of U onto V</button>
+            </div>
+
+            <div class="solution-display card hidden" id="vectorSolutionDisplay">
+              <h4>Vector Operations Result</h4>
+              <div class="vector-result-content" id="vectorResultContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 6: STATS & PROBABILITY -->
+        <section class="calc-panel" id="stats-calc">
+          <div class="stats-layout card">
+            <div class="stats-type-selector">
+              <button class="stats-tab active" data-stats="descriptive">Descriptive Stats</button>
+              <button class="stats-tab" data-stats="prob-dist">Probability Distributions</button>
+              <button class="stats-tab" data-stats="combinatorics">Combinatorics</button>
+            </div>
+
+            <div class="stats-sub-panel active" id="statsDescriptivePanel">
+              <div class="form-group">
+                <label for="statsDataInput">Enter dataset (numbers separated by commas or spaces):</label>
+                <textarea id="statsDataInput" rows="3" class="form-control" placeholder="e.g. 10, 15, 23, 25, 30, 31, 31, 45, 52, 60"></textarea>
+              </div>
+            </div>
+
+            <div class="stats-sub-panel hidden" id="statsProbDistPanel">
+              <div class="prob-dist-selector">
+                <label for="probDistType">Distribution Type:</label>
+                <select id="probDistType" class="form-select">
+                  <option value="normal" selected>Normal Distribution</option>
+                  <option value="binomial">Binomial Distribution</option>
+                  <option value="poisson">Poisson Distribution</option>
+                </select>
+              </div>
+              
+              <div class="prob-inputs" id="probInputsContainer">
+                <!-- Inputs populated dynamically -->
+              </div>
+            </div>
+
+            <div class="stats-sub-panel hidden" id="statsCombinatoricsPanel">
+              <div class="comb-layout">
+                <div class="comb-inputs">
+                  <div class="input-inline">
+                    <label for="combN">n (total items):</label>
+                    <input type="number" id="combN" value="10" class="form-control small-val">
+                  </div>
+                  <div class="input-inline">
+                    <label for="combR">r (chosen items):</label>
+                    <input type="number" id="combR" value="3" class="form-control small-val">
+                  </div>
+                </div>
+                <div class="comb-actions">
+                  <button class="btn-primary" id="btnCombPerm">Permutations (nPr)</button>
+                  <button class="btn-primary" id="btnCombComb">Combinations (nCr)</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveStats">Calculate</button>
+            </div>
+
+            <div class="solution-display card hidden" id="statsSolutionDisplay">
+              <h4>Results</h4>
+              <div class="stats-result-content" id="statsResultContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 7: BASE CONVERTER -->
+        <section class="calc-panel" id="base-conv">
+          <div class="base-layout card">
+            <div class="base-inputs">
+              <div class="form-group">
+                <label for="baseInputVal">Input Value:</label>
+                <input type="text" id="baseInputVal" class="form-control" value="255" placeholder="Enter value">
+              </div>
+              <div class="form-group">
+                <label for="baseInputType">Input Base:</label>
+                <select id="baseInputType" class="form-select">
+                  <option value="10" selected>Decimal (Base 10)</option>
+                  <option value="2">Binary (Base 2)</option>
+                  <option value="8">Octal (Base 8)</option>
+                  <option value="16">Hexadecimal (Base 16)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Bitwise operations section -->
+            <div class="bitwise-section">
+              <h5>Bitwise Operations (Decimal / Binary inputs)</h5>
+              <div class="bitwise-inputs">
+                <input type="text" id="bitwiseValB" class="form-control small-val" placeholder="Value B" value="15">
+                <select id="bitwiseOp" class="form-select small-val">
+                  <option value="AND">AND</option>
+                  <option value="OR">OR</option>
+                  <option value="XOR">XOR</option>
+                  <option value="NOT">NOT (A only)</option>
+                  <option value="SHL">L-Shift (&lt;&lt; B)</option>
+                  <option value="SHR">R-Shift (&gt;&gt; B)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveBase">Convert & Compute</button>
+            </div>
+
+            <div class="solution-display card hidden" id="baseSolutionDisplay">
+              <h4>Representations & Results</h4>
+              <div class="base-results" id="baseResultContent">
+                <!-- Base representations Binary, Octal, Decimal, Hex -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 8: COMPLEX NUMBERS -->
+        <section class="calc-panel" id="complex-calc">
+          <div class="complex-layout card">
+            <div class="complex-inputs">
+              <div class="complex-number-block">
+                <h5>Complex Number Z₁</h5>
+                <div class="rect-inputs">
+                  <input type="text" id="compZ1Real" placeholder="Real (a)" value="3" class="form-control">
+                  <span>+</span>
+                  <input type="text" id="compZ1Imag" placeholder="Imaginary (b)" value="4" class="form-control">
+                  <span>i</span>
+                </div>
+              </div>
+
+              <div class="complex-number-block">
+                <h5>Complex Number Z₂</h5>
+                <div class="rect-inputs">
+                  <input type="text" id="compZ2Real" placeholder="Real (a)" value="1" class="form-control">
+                  <span>+</span>
+                  <input type="text" id="compZ2Imag" placeholder="Imaginary (b)" value="-2" class="form-control">
+                  <span>i</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="complex-operations">
+              <button class="btn-primary" id="btnCompAdd">Z₁ + Z₂</button>
+              <button class="btn-primary" id="btnCompSub">Z₁ - Z₂</button>
+              <button class="btn-primary" id="btnCompMul">Z₁ × Z₂</button>
+              <button class="btn-primary" id="btnCompDiv">Z₁ / Z₂</button>
+              <button class="btn-primary" id="btnCompPolar">Polar Form (Z₁ & Z₂)</button>
+              <button class="btn-primary" id="btnCompConj">Conjugates</button>
+            </div>
+
+            <div class="solution-display card hidden" id="complexSolutionDisplay">
+              <h4>Calculated Output</h4>
+              <div class="complex-result-content" id="complexResultContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 9: FINANCIAL CALCULATOR -->
+        <section class="calc-panel" id="finance-calc">
+          <div class="finance-layout card">
+            <div class="finance-type-selector">
+              <button class="finance-tab active" data-finance="emi">Loan EMI Amortization</button>
+              <button class="finance-tab" data-finance="interest">Interest (Simple & Compound)</button>
+              <button class="finance-tab" data-finance="fv">Future Value / Annuity</button>
+            </div>
+
+            <div class="finance-sub-panel active" id="finEmiPanel">
+              <div class="finance-grid-inputs">
+                <div class="form-group">
+                  <label for="emiPrincipal">Principal Amount (L):</label>
+                  <input type="number" id="emiPrincipal" value="100000" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="emiRate">Annual Interest Rate (%):</label>
+                  <input type="number" id="emiRate" value="8.5" step="0.1" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="emiTenure">Tenure (Years):</label>
+                  <input type="number" id="emiTenure" value="5" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div class="finance-sub-panel hidden" id="finInterestPanel">
+              <div class="finance-grid-inputs">
+                <div class="form-group">
+                  <label for="intPrincipal">Principal Amount:</label>
+                  <input type="number" id="intPrincipal" value="5000" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="intRate">Annual Interest Rate (%):</label>
+                  <input type="number" id="intRate" value="5" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="intTime">Time Period (Years):</label>
+                  <input type="number" id="intTime" value="3" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="intCompounding">Compounding Frequency:</label>
+                  <select id="intCompounding" class="form-select">
+                    <option value="1">Annually (1/yr)</option>
+                    <option value="2">Semi-Annually (2/yr)</option>
+                    <option value="4" selected>Quarterly (4/yr)</option>
+                    <option value="12">Monthly (12/yr)</option>
+                    <option value="365">Daily (365/yr)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="finance-sub-panel hidden" id="finFvPanel">
+              <div class="finance-grid-inputs">
+                <div class="form-group">
+                  <label for="fvPayment">Periodic Payment (PMT):</label>
+                  <input type="number" id="fvPayment" value="500" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="fvRate">Rate per Period (%):</label>
+                  <input type="number" id="fvRate" value="6" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="fvPeriods">Number of Periods (n):</label>
+                  <input type="number" id="fvPeriods" value="12" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="fvType">Payment Type:</label>
+                  <select id="fvType" class="form-select">
+                    <option value="0" selected>Ordinary Annuity (End of Period)</option>
+                    <option value="1">Annuity Due (Start of Period)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveFinance">Calculate Financials</button>
+            </div>
+
+            <div class="solution-display card hidden" id="financeSolutionDisplay">
+              <h4>Financial Summary</h4>
+              <div class="finance-result-content" id="financeResultContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 10: UNIT CONVERTER -->
+        <section class="calc-panel" id="unit-conv">
+          <div class="unit-layout card">
+            <div class="unit-type-select">
+              <label for="unitCategory">Measurement Category:</label>
+              <select id="unitCategory" class="form-select">
+                <option value="length" selected>Length</option>
+                <option value="mass">Mass / Weight</option>
+                <option value="area">Area</option>
+                <option value="volume">Volume</option>
+                <option value="speed">Speed</option>
+                <option value="temperature">Temperature</option>
+                <option value="angle">Angle</option>
+                <option value="time">Time</option>
+              </select>
+            </div>
+
+            <div class="unit-grid-io">
+              <div class="unit-box">
+                <label for="unitInputVal">From Value:</label>
+                <input type="number" id="unitInputVal" class="form-control" value="1">
+                <select id="unitFrom" class="form-select unit-selector"></select>
+              </div>
+
+              <div class="unit-arrow">
+                <i class="fa-solid fa-right-left"></i>
+              </div>
+
+              <div class="unit-box">
+                <label for="unitOutputVal">To Value (Result):</label>
+                <input type="number" id="unitOutputVal" class="form-control" readonly>
+                <select id="unitTo" class="form-select unit-selector"></select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 11: FUNCTION GRAPHER -->
+        <section class="calc-panel" id="grapher">
+          <div class="grapher-layout card">
+            <div class="grapher-grid">
+              <!-- Sidebar configuration -->
+              <div class="graph-inputs-sidebar">
+                <h5>Functions</h5>
+                <div class="graph-input-row" style="--accent-color: #3b82f6;">
+                  <span class="fn-label">y₁ =</span>
+                  <input type="text" id="graphF1" class="form-control" value="x^2 - 2" placeholder="Function 1">
+                </div>
+                <div class="graph-input-row" style="--accent-color: #10b981;">
+                  <span class="fn-label">y₂ =</span>
+                  <input type="text" id="graphF2" class="form-control" value="sin(x)" placeholder="Function 2">
+                </div>
+                <div class="graph-input-row" style="--accent-color: #f59e0b;">
+                  <span class="fn-label">y₃ =</span>
+                  <input type="text" id="graphF3" class="form-control" value="" placeholder="Function 3">
+                </div>
+                
+                <div class="graph-controls">
+                  <button class="btn-primary w-100" id="btnUpdateGraph">
+                    <i class="fa-solid fa-rotate"></i> Plot Graph
+                  </button>
+                  
+                  <div class="zoom-buttons mt-3">
+                    <button class="btn-secondary" id="btnZoomIn" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom In</button>
+                    <button class="btn-secondary" id="btnZoomOut" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i> Zoom Out</button>
+                    <button class="btn-secondary" id="btnResetView" title="Reset View"><i class="fa-solid fa-arrows-to-dot"></i> Reset</button>
+                  </div>
+                </div>
+
+                <div class="graph-legend">
+                  <p><i class="fa-solid fa-circle" style="color: #3b82f6;"></i> y₁ (Blue)</p>
+                  <p><i class="fa-solid fa-circle" style="color: #10b981;"></i> y₂ (Green)</p>
+                  <p><i class="fa-solid fa-circle" style="color: #f59e0b;"></i> y₃ (Orange)</p>
+                </div>
+              </div>
+
+              <!-- Plot Canvas -->
+              <div class="graph-canvas-container">
+                <canvas id="graphCanvas"></canvas>
+                <div class="coords-display" id="coordsDisplay">x: 0.00, y: 0.00</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Main JavaScript App Loader -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
