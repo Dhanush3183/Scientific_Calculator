@@ -13,6 +13,24 @@ let keypadBasic;
 let keypadTabs;
 
 export function initGeneral() {
+  // Override mathjs functions to work in degrees
+  math.import({
+    sin: function(x) { return Math.sin(x * Math.PI / 180); },
+    cos: function(x) {
+      const val = Math.cos(x * Math.PI / 180);
+      return Math.abs(val) < 1e-14 ? 0 : val;
+    },
+    tan: function(x) {
+      const rad = x * Math.PI / 180;
+      if (Math.abs(Math.cos(rad)) < 1e-14) return NaN;
+      const val = Math.tan(rad);
+      return Math.abs(val) < 1e-14 ? 0 : val;
+    },
+    asin: function(x) { return Math.asin(x) * 180 / Math.PI; },
+    acos: function(x) { return Math.acos(x) * 180 / Math.PI; },
+    atan: function(x) { return Math.atan(x) * 180 / Math.PI; }
+  }, { override: true });
+
   display = document.getElementById('generalDisplay');
   historyPreview = document.getElementById('generalHistoryPreview');
   historyList = document.getElementById('generalHistoryList');
@@ -138,8 +156,9 @@ function updateDisplay() {
     .replace(/\//g, '÷')
     .replace(/pi/g, 'π')
     .replace(/phi/g, 'φ')
-    .replace(/log10\(/g, 'log(')
-    .replace(/log\(/g, 'ln(');
+    .replace(/sin\^-1\(/g, 'sin⁻¹(')
+    .replace(/cos\^-1\(/g, 'cos⁻¹(')
+    .replace(/tan\^-1\(/g, 'tan⁻¹(');
 
   display.textContent = displayHTML;
 }
@@ -148,7 +167,14 @@ function updateDisplay() {
 function evaluateExpression() {
   if (expression === '0' || expression === '') return;
   
-  let evalExpr = expression;
+  // Translate visual tokens to math.js functions prior to evaluation
+  let evalExpr = expression
+    .replace(/sin\^-1\(/g, 'asin(')
+    .replace(/cos\^-1\(/g, 'acos(')
+    .replace(/tan\^-1\(/g, 'atan(')
+    .replace(/sin⁻¹\(/g, 'asin(')
+    .replace(/cos⁻¹\(/g, 'acos(')
+    .replace(/tan⁻¹\(/g, 'atan(');
   
   // Basic bracket auto-completion
   const openCount = (evalExpr.match(/\(/g) || []).length;

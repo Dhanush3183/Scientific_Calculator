@@ -1,17 +1,20 @@
 // app.js - Main Application Entry & Controller
 
 // Imports of modules
-import { initGeneral, handleGeneralKeyboard } from './modules/general.js';
-import { initEquations } from './modules/equations.js';
-import { initMatrix, handleMatrixResize } from './modules/matrix.js';
-import { initCalculus } from './modules/calculus.js';
-import { initVectors } from './modules/vectors.js';
-import { initStats } from './modules/statistics.js';
-import { initBaseConv } from './modules/baseconv.js';
-import { initComplex } from './modules/complex.js';
-import { initFinance } from './modules/finance.js';
-import { initUnits } from './modules/units.js';
-import { initGrapher, resizeGraphCanvas } from './modules/grapher.js';
+import { initGeneral, handleGeneralKeyboard } from './modules/general.js?v=1.3';
+import { initEquations } from './modules/equations.js?v=1.3';
+import { initMatrix, handleMatrixResize } from './modules/matrix.js?v=1.3';
+import { initCalculus } from './modules/calculus.js?v=1.3';
+import { initVectors } from './modules/vectors.js?v=1.3';
+import { initStats } from './modules/statistics.js?v=1.3';
+import { initBaseConv } from './modules/baseconv.js?v=1.3';
+import { initComplex } from './modules/complex.js?v=1.3';
+import { initFinance } from './modules/finance.js?v=1.3';
+import { initUnits } from './modules/units.js?v=1.3';
+import { initInequality } from './modules/inequality.js?v=1.3';
+import { initRatio } from './modules/ratio.js?v=1.3';
+import { initHigher } from './modules/higher.js?v=1.3';
+import { initGrapher, resizeGraphCanvas } from './modules/grapher.js?v=1.3';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Navigation & UI Elements
@@ -146,6 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'finance-calc':
         document.getElementById('btnSolveFinance')?.click();
         break;
+      case 'inequality-solver':
+        document.getElementById('btnSolveInequality')?.click();
+        break;
+      case 'ratio-solver':
+        document.getElementById('btnSolveRatio')?.click();
+        break;
+      case 'higher-calc':
+        document.getElementById('btnSolveHigher')?.click();
+        break;
     }
   }
 
@@ -160,6 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initComplex();
   initFinance();
   initUnits();
+  initInequality();
+  initRatio();
+  initHigher();
   initGrapher();
 
   // Handle resizing of grapher canvas on window resize

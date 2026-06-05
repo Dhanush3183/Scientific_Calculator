@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniMath | Premium Scientific Calculator & Math Suite</title>
+  <title>StarMath | Premium Scientific Calculator & Math Suite</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
   <!-- MathJS CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body>
   <div class="app-container">
@@ -23,13 +23,17 @@
         <div class="logo-icon">
           <i class="fa-solid fa-square-root-variable"></i>
         </div>
-        <span class="logo-text">OmniMath</span>
+        <span class="logo-text">StarMath</span>
       </div>
       
       <nav class="nav-menu">
         <button class="nav-item active" data-target="general-calc">
           <i class="fa-solid fa-calculator"></i>
           <span>General Calculator</span>
+        </button>
+        <button class="nav-item" data-target="higher-calc">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Higher Calculator</span>
         </button>
         <button class="nav-item" data-target="equation-solver">
           <i class="fa-solid fa-equals"></i>
@@ -52,7 +56,7 @@
           <span>Stats & Probability</span>
         </button>
         <button class="nav-item" data-target="base-conv">
-          <i class="fa-solid fa-binary"></i>
+          <i class="fa-solid fa-microchip"></i>
           <span>Base Converter</span>
         </button>
         <button class="nav-item" data-target="complex-calc">
@@ -67,6 +71,14 @@
           <i class="fa-solid fa-arrows-spin"></i>
           <span>Unit Converter</span>
         </button>
+        <button class="nav-item" data-target="inequality-solver">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <span>Inequality Solver</span>
+        </button>
+        <button class="nav-item" data-target="ratio-solver">
+          <i class="fa-solid fa-percent"></i>
+          <span>Ratio Solver</span>
+        </button>
         <button class="nav-item" data-target="grapher">
           <i class="fa-solid fa-bezier-curve"></i>
           <span>Function Grapher</span>
@@ -74,7 +86,7 @@
       </nav>
 
       <div class="sidebar-footer">
-        <p>OmniMath v1.0</p>
+        <p>StarMath v2.0</p>
         <span>Premium Light Edition</span>
       </div>
     </aside>
@@ -116,52 +128,51 @@
               <!-- Scientific Keypad -->
               <div class="keypad-grid scientific-pad" id="keypadScientific">
                 <!-- Row 1 -->
-                <button class="btn btn-func" data-val="clear">AC</button>
-                <button class="btn btn-func" data-val="backspace"><i class="fa-solid fa-delete-left"></i></button>
+                <button class="btn btn-op" data-val="sin(">sin</button>
+                <button class="btn btn-op" data-val="cos(">cos</button>
+                <button class="btn btn-op" data-val="tan(">tan</button>
+                <button class="btn btn-op" data-val="sin^-1(">sin<sup>-1</sup></button>
+                <button class="btn btn-op" data-val="cos^-1(">cos<sup>-1</sup></button>
+                
+                <!-- Row 2 -->
+                <button class="btn btn-op" data-val="tan^-1(">tan<sup>-1</sup></button>
+                <button class="btn btn-op" data-val="^">x<sup>y</sup></button>
+                <button class="btn btn-op" data-val="sqrt(">√</button>
+                <button class="btn btn-op" data-val="log10(">log</button>
+                <button class="btn btn-op" data-val="ln(">ln</button>
+                
+                <!-- Row 3 -->
+                <button class="btn btn-op" data-val="pi">π</button>
+                <button class="btn btn-op" data-val="e">e</button>
                 <button class="btn btn-func" data-val="(">(</button>
                 <button class="btn btn-func" data-val=")">)</button>
                 <button class="btn btn-func" data-val="%">%</button>
                 
-                <!-- Row 2 -->
-                <button class="btn btn-op" data-val="sin(">sin</button>
-                <button class="btn btn-op" data-val="cos(">cos</button>
-                <button class="btn btn-op" data-val="tan(">tan</button>
-                <button class="btn btn-op" data-val="^">x<sup>y</sup></button>
-                <button class="btn btn-op" data-val="/">÷</button>
-                
-                <!-- Row 3 -->
-                <button class="btn btn-op" data-val="asin(">asin</button>
-                <button class="btn btn-op" data-val="acos(">acos</button>
-                <button class="btn btn-op" data-val="atan(">atan</button>
-                <button class="btn btn-op" data-val="sqrt(">√</button>
-                <button class="btn btn-op" data-val="*">×</button>
-                
                 <!-- Row 4 -->
-                <button class="btn btn-op" data-val="log10(">log</button>
                 <button class="btn btn-num" data-val="7">7</button>
                 <button class="btn btn-num" data-val="8">8</button>
                 <button class="btn btn-num" data-val="9">9</button>
-                <button class="btn btn-op" data-val="-">-</button>
+                <button class="btn btn-op" data-val="/">÷</button>
+                <button class="btn btn-func" data-val="clear">AC</button>
                 
                 <!-- Row 5 -->
-                <button class="btn btn-op" data-val="log(">ln</button>
                 <button class="btn btn-num" data-val="4">4</button>
                 <button class="btn btn-num" data-val="5">5</button>
                 <button class="btn btn-num" data-val="6">6</button>
-                <button class="btn btn-op" data-val="+">+</button>
+                <button class="btn btn-op" data-val="*">×</button>
+                <button class="btn btn-func" data-val="backspace"><i class="fa-solid fa-delete-left"></i></button>
                 
                 <!-- Row 6 -->
-                <button class="btn btn-op" data-val="pi">π</button>
                 <button class="btn btn-num" data-val="1">1</button>
                 <button class="btn btn-num" data-val="2">2</button>
                 <button class="btn btn-num" data-val="3">3</button>
-                <button class="btn btn-action equals" data-val="equals">=</button>
+                <button class="btn btn-op" data-val="-">-</button>
+                <button class="btn btn-op" data-val="+">+</button>
                 
                 <!-- Row 7 -->
-                <button class="btn btn-op" data-val="e">e</button>
-                <button class="btn btn-op" data-val="phi">φ</button>
                 <button class="btn btn-num zero" data-val="0">0</button>
                 <button class="btn btn-num" data-val=".">.</button>
+                <button class="btn btn-action equals" data-val="equals">=</button>
               </div>
 
               <!-- Basic Keypad (shown on toggle) -->
@@ -248,19 +259,35 @@
           <div class="matrix-layout card">
             <div class="matrix-config">
               <div class="config-group">
-                <label>Matrix A Size:</label>
-                <select id="matrixASize" class="form-select size-select">
-                  <option value="2">2 x 2</option>
-                  <option value="3" selected>3 x 3</option>
-                  <option value="4">4 x 4</option>
+                <label>Matrix A Size (Row x Col):</label>
+                <select id="matrixARows" class="form-select size-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
+                </select>
+                <span>x</span>
+                <select id="matrixACols" class="form-select size-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
                 </select>
               </div>
               <div class="config-group">
-                <label>Matrix B Size:</label>
-                <select id="matrixBSize" class="form-select size-select">
-                  <option value="2">2 x 2</option>
-                  <option value="3" selected>3 x 3</option>
-                  <option value="4">4 x 4</option>
+                <label>Matrix B Size (Row x Col):</label>
+                <select id="matrixBRows" class="form-select size-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
+                </select>
+                <span>x</span>
+                <select id="matrixBCols" class="form-select size-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
                 </select>
               </div>
             </div>
@@ -736,6 +763,284 @@
           </div>
         </section>
 
+        <!-- MODULE: INEQUALITY SOLVER -->
+        <section class="calc-panel" id="inequality-solver">
+          <div class="solver-layout card">
+            <div class="solver-type-selector">
+              <label for="ineqType">Inequality Degree:</label>
+              <select id="ineqType" class="form-select" style="max-width: 400px;">
+                <option value="linear" selected>Linear Inequality (ax + b [op] 0)</option>
+                <option value="quadratic">Quadratic Inequality (ax² + bx + c [op] 0)</option>
+              </select>
+            </div>
+
+            <div class="ineq-inputs-row">
+              <div class="eq-input-section" id="ineqCoeffContainer" style="padding: 0;">
+                <!-- Dynamically populated -->
+              </div>
+              <div class="config-group mt-3" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <label for="ineqOp" style="margin-bottom: 0;">Operator:</label>
+                  <select id="ineqOp" class="form-select" style="width: 100px;">
+                    <option value=">">&gt;</option>
+                    <option value="<">&lt;</option>
+                    <option value=">=">&ge;</option>
+                    <option value="<=">&le;</option>
+                  </select>
+                </div>
+                <div class="coeff-term">0</div>
+              </div>
+            </div>
+
+            <div class="solve-action-bar">
+              <button class="btn-primary" id="btnSolveInequality">
+                <i class="fa-solid fa-gears"></i> Solve Inequality
+              </button>
+            </div>
+
+            <div class="solution-display card hidden" id="ineqSolutionDisplay">
+              <h4>Solution Breakdown</h4>
+              <div class="solution-content" id="ineqSolutionContent">
+                <!-- Solutions and steps here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE: RATIO SOLVER -->
+        <section class="calc-panel" id="ratio-solver">
+          <div class="ratio-layout card">
+            <div class="ratio-type-selector" style="display: flex; gap: 8px; background: rgba(0, 0, 0, 0.04); padding: 4px; border-radius: var(--radius-sm); align-self: flex-start; margin-bottom: 20px;">
+              <button class="ratio-tab active" data-ratio="simplify">Simplify Ratio</button>
+              <button class="ratio-tab" data-ratio="divide">Divide Total</button>
+              <button class="ratio-tab" data-ratio="proportion">Proportion Solver</button>
+            </div>
+
+            <!-- Simplify Sub-panel -->
+            <div class="ratio-sub-panel active" id="ratioSimplifyPanel">
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label for="ratioSimplifyInput">Enter terms (separated by colons or spaces, e.g. 15 : 25 : 35):</label>
+                <input type="text" id="ratioSimplifyInput" class="form-control" value="15:25:35" placeholder="e.g. 15:25 or 12:18:30">
+              </div>
+              <button class="btn-primary" id="btnSolveSimplifyRatio" style="margin-top: 10px;">
+                <i class="fa-solid fa-gears"></i> Simplify Ratio
+              </button>
+              <div class="solution-display card hidden" id="ratioSimplifySolutionDisplay" style="margin-top: 20px;">
+                <h4>Results</h4>
+                <div id="ratioSimplifyResultContent"></div>
+              </div>
+            </div>
+
+            <!-- Divide Sub-panel -->
+            <div class="ratio-sub-panel hidden" id="ratioDividePanel">
+              <div class="finance-grid-inputs">
+                <div class="form-group">
+                  <label for="ratioTotal">Total Amount to Divide:</label>
+                  <input type="number" id="ratioTotal" class="form-control" value="120">
+                </div>
+                <div class="form-group">
+                  <label for="ratioDivideParts">Ratio (separated by colons or spaces, e.g. 2 : 3 : 5):</label>
+                  <input type="text" id="ratioDivideParts" class="form-control" value="2:3:5" placeholder="e.g. 1:3 or 2:3:5">
+                </div>
+              </div>
+              <button class="btn-primary" id="btnSolveDivideRatio" style="margin-top: 15px;">
+                <i class="fa-solid fa-gears"></i> Divide Total
+              </button>
+              <div class="solution-display card hidden" id="ratioDivideSolutionDisplay" style="margin-top: 20px;">
+                <h4>Results</h4>
+                <div id="ratioDivideResultContent"></div>
+              </div>
+            </div>
+
+            <!-- Proportion Sub-panel -->
+            <div class="ratio-sub-panel hidden" id="ratioProportionPanel">
+              <div class="proportion-inputs-layout">
+                <h5 style="margin-bottom: 6px; font-size: 1rem;">Solve for x in equivalent ratios A : B = C : D</h5>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Leave one field blank or enter 'x' to solve for it.</p>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); margin-bottom: 15px;">
+                  <input type="text" id="propA" class="form-control small-val" value="3" style="width: 70px; text-align: center;">
+                  <span class="coeff-term">:</span>
+                  <input type="text" id="propB" class="form-control small-val" value="5" style="width: 70px; text-align: center;">
+                  <span class="coeff-term">=</span>
+                  <input type="text" id="propC" class="form-control small-val" value="6" style="width: 70px; text-align: center;">
+                  <span class="coeff-term">:</span>
+                  <input type="text" id="propD" class="form-control small-val" value="x" placeholder="x" style="width: 70px; text-align: center;">
+                </div>
+              </div>
+              <button class="btn-primary" id="btnSolveProportion" style="margin-top: 10px;">
+                <i class="fa-solid fa-gears"></i> Solve Proportion
+              </button>
+              <div class="solution-display card hidden" id="ratioProportionSolutionDisplay" style="margin-top: 20px;">
+                <h4>Results</h4>
+                <div id="ratioProportionResultContent"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE: HIGHER CALCULATOR -->
+        <section class="calc-panel" id="higher-calc">
+          <div class="higher-layout card">
+            <div class="higher-type-selector" style="display: flex; gap: 8px; background: rgba(0, 0, 0, 0.04); padding: 4px; border-radius: var(--radius-sm); align-self: flex-start; margin-bottom: 20px; flex-wrap: wrap;">
+              <button class="higher-tab active" data-higher="nroot-log">Roots & Logs</button>
+              <button class="higher-tab" data-higher="powers">Powers & Inverses</button>
+              <button class="higher-tab" data-higher="fractions">Fractions & Mixed</button>
+              <button class="higher-tab" data-higher="factors-gcd">GCD / Factors</button>
+            </div>
+
+            <!-- Roots & Logs Sub-panel -->
+            <div class="higher-sub-panel active" id="higherNrootLogPanel">
+              <div class="finance-grid-inputs">
+                <!-- Box root box -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">nth Root Solver (ⁿ√x)</h5>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+                      <label style="margin-bottom:0;">Root Degree (n):</label>
+                      <input type="number" id="higherNRootDegree" class="form-control small-val" value="3" style="width: 70px; text-align: center;">
+                      <label style="margin-bottom:0;">Number (x):</label>
+                      <input type="number" id="higherNRootValue" class="form-control small-val" value="8" style="width: 80px; text-align: center;">
+                    </div>
+                  </div>
+                  <button class="btn-primary" id="btnSolveNRoot">
+                    <i class="fa-solid fa-gears"></i> Calculate Root
+                  </button>
+                  <div class="solution-display card hidden" id="higherNRootSolutionDisplay" style="margin-top: 15px;">
+                    <h4>nth Root Result</h4>
+                    <div id="higherNRootResultContent"></div>
+                  </div>
+                </div>
+                <!-- Log base y of x -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">Custom Base Logarithm (log<sub>y</sub>(x))</h5>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+                      <label style="margin-bottom:0;">Base (y):</label>
+                      <input type="number" id="higherLogBase" class="form-control small-val" value="2" style="width: 70px; text-align: center;">
+                      <label style="margin-bottom:0;">Value (x):</label>
+                      <input type="number" id="higherLogValue" class="form-control small-val" value="8" style="width: 80px; text-align: center;">
+                    </div>
+                  </div>
+                  <button class="btn-primary" id="btnSolveCustomLog">
+                    <i class="fa-solid fa-gears"></i> Calculate Log
+                  </button>
+                  <div class="solution-display card hidden" id="higherCustomLogSolutionDisplay" style="margin-top: 15px;">
+                    <h4>Logarithm Result</h4>
+                    <div id="higherCustomLogResultContent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Powers & Inverses Sub-panel -->
+            <div class="higher-sub-panel hidden" id="higherPowersPanel">
+              <div style="background: rgba(255, 255, 255, 0.35); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; gap: 16px;">
+                <h5 style="font-size: 0.95rem;">Powers Solver (x⁻¹, x², xʸ)</h5>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <label for="higherPowerVal" style="margin-bottom:0;">Enter base value (x):</label>
+                  <input type="number" id="higherPowerVal" class="form-control small-val" value="5" style="width: 90px; text-align: center;">
+                  
+                  <label for="higherPowerExp" style="margin-bottom:0; margin-left: 10px;">Exponent y (for xʸ):</label>
+                  <input type="number" id="higherPowerExp" class="form-control small-val" value="3" style="width: 70px; text-align: center;">
+                </div>
+                
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                  <button class="btn-primary" id="btnHigherPowerInv">Solve x⁻¹</button>
+                  <button class="btn-primary" id="btnHigherPowerSq">Solve x²</button>
+                  <button class="btn-primary" id="btnHigherPowerY">Solve xʸ</button>
+                </div>
+                
+                <div class="solution-display card hidden" id="higherPowersSolutionDisplay" style="margin-top: 15px;">
+                  <h4>Powers Result</h4>
+                  <div id="higherPowersResultContent"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fractions & Mixed Fractions Sub-panel -->
+            <div class="higher-sub-panel hidden" id="higherFractionsPanel">
+              <div class="finance-grid-inputs">
+                <!-- Standard Fraction -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">Standard Fraction (a / b)</h5>
+                    <div style="display: flex; flex-direction: column; align-items: center; width: 80px; gap: 4px; margin: 0 auto 15px;">
+                      <input type="number" id="higherFracNum" class="form-control small-val" value="8" style="text-align: center; width: 70px;">
+                      <div style="width: 70px; height: 2px; background: var(--text-main);"></div>
+                      <input type="number" id="higherFracDen" class="form-control small-val" value="12" style="text-align: center; width: 70px;">
+                    </div>
+                  </div>
+                  <button class="btn-primary" id="btnSolveStandardFrac">
+                    <i class="fa-solid fa-gears"></i> Simplify Fraction
+                  </button>
+                  <div class="solution-display card hidden" id="higherStandardFracSolutionDisplay" style="margin-top: 15px;">
+                    <h4>Fraction Result</h4>
+                    <div id="higherStandardFracResultContent"></div>
+                  </div>
+                </div>
+
+                <!-- Mixed Fraction -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">Mixed Fraction w (a / b)</h5>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;">
+                      <input type="number" id="higherMixedWhole" class="form-control small-val" value="2" style="text-align: center; width: 60px;" placeholder="Whole">
+                      <div style="display: flex; flex-direction: column; align-items: center; width: 60px; gap: 4px;">
+                        <input type="number" id="higherMixedNum" class="form-control small-val" value="4" style="text-align: center; width: 55px;" placeholder="Num">
+                        <div style="width: 55px; height: 2px; background: var(--text-main);"></div>
+                        <input type="number" id="higherMixedDen" class="form-control small-val" value="6" style="text-align: center; width: 55px;" placeholder="Den">
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn-primary" id="btnSolveMixedFrac">
+                    <i class="fa-solid fa-gears"></i> Simplify Mixed Fraction
+                  </button>
+                  <div class="solution-display card hidden" id="higherMixedFracSolutionDisplay" style="margin-top: 15px;">
+                    <h4>Mixed Fraction Result</h4>
+                    <div id="higherMixedFracResultContent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GCD / LCM & Prime Factors Sub-panel -->
+            <div class="higher-sub-panel hidden" id="higherFactorsGcdPanel">
+              <div class="finance-grid-inputs">
+                <!-- GCD/LCM -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">GCD & LCM Solver</h5>
+                    <label for="higherGcdLcmInput">Enter list of integers (comma separated):</label>
+                    <input type="text" id="higherGcdLcmInput" class="form-control" value="24, 36, 60" placeholder="e.g. 12, 18, 30" style="margin-bottom: 15px;">
+                  </div>
+                  <button class="btn-primary" id="btnSolveGcdLcm">
+                    <i class="fa-solid fa-gears"></i> Calculate GCD & LCM
+                  </button>
+                  <div class="solution-display card hidden" id="higherGcdLcmSolutionDisplay" style="margin-top: 15px;">
+                    <h4>GCD & LCM Result</h4>
+                    <div id="higherGcdLcmResultContent"></div>
+                  </div>
+                </div>
+                <!-- Prime factorization -->
+                <div class="form-group" style="background: rgba(255, 255, 255, 0.35); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h5 style="margin-bottom: 12px; font-size: 0.95rem;">Prime Factorization</h5>
+                    <label for="higherPrimeInput">Enter integer:</label>
+                    <input type="number" id="higherPrimeInput" class="form-control" value="120" placeholder="e.g. 120 or 999" style="margin-bottom: 15px;">
+                  </div>
+                  <button class="btn-primary" id="btnSolvePrimeFactors">
+                    <i class="fa-solid fa-gears"></i> Factorize Number
+                  </button>
+                  <div class="solution-display card hidden" id="higherPrimeSolutionDisplay" style="margin-top: 15px;">
+                    <h4>Prime Factorization Result</h4>
+                    <div id="higherPrimeResultContent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- MODULE 11: FUNCTION GRAPHER -->
         <section class="calc-panel" id="grapher">
           <div class="grapher-layout card">
@@ -789,6 +1094,6 @@
   </div>
 
   <!-- Main JavaScript App Loader -->
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=1.3"></script>
 </body>
 </html>

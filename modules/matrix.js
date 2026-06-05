@@ -1,23 +1,29 @@
 // matrix.js - Matrix Calculator Module
 
-let matrixASizeSelect;
-let matrixBSizeSelect;
+let matrixARowsSelect;
+let matrixAColsSelect;
+let matrixBRowsSelect;
+let matrixBColsSelect;
 let matrixAGrid;
 let matrixBGrid;
 let matrixSolutionDisplay;
 let matrixResultContent;
 
 export function initMatrix() {
-  matrixASizeSelect = document.getElementById('matrixASize');
-  matrixBSizeSelect = document.getElementById('matrixBSize');
+  matrixARowsSelect = document.getElementById('matrixARows');
+  matrixAColsSelect = document.getElementById('matrixACols');
+  matrixBRowsSelect = document.getElementById('matrixBRows');
+  matrixBColsSelect = document.getElementById('matrixBCols');
   matrixAGrid = document.getElementById('matrixAGrid');
   matrixBGrid = document.getElementById('matrixBGrid');
   matrixSolutionDisplay = document.getElementById('matrixSolutionDisplay');
   matrixResultContent = document.getElementById('matrixResultContent');
 
   // Trigger grid draws on size changes
-  matrixASizeSelect?.addEventListener('change', drawMatrixAGrid);
-  matrixBSizeSelect?.addEventListener('change', drawMatrixBGrid);
+  matrixARowsSelect?.addEventListener('change', drawMatrixAGrid);
+  matrixAColsSelect?.addEventListener('change', drawMatrixAGrid);
+  matrixBRowsSelect?.addEventListener('change', drawMatrixBGrid);
+  matrixBColsSelect?.addEventListener('change', drawMatrixBGrid);
 
   // Matrix A quick actions
   document.getElementById('btnMatrixAClear')?.addEventListener('click', () => fillMatrix('A', 0));
@@ -52,30 +58,30 @@ export function handleMatrixResize() {
 }
 
 function drawMatrixAGrid() {
-  const size = parseInt(matrixASizeSelect.value);
-  generateGrid(matrixAGrid, 'A', size);
+  const rows = parseInt(matrixARowsSelect.value);
+  const cols = parseInt(matrixAColsSelect.value);
+  generateGrid(matrixAGrid, 'A', rows, cols);
 }
 
 function drawMatrixBGrid() {
-  const size = parseInt(matrixBSizeSelect.value);
-  generateGrid(matrixBGrid, 'B', size);
+  const rows = parseInt(matrixBRowsSelect.value);
+  const cols = parseInt(matrixBColsSelect.value);
+  generateGrid(matrixBGrid, 'B', rows, cols);
 }
 
 // Draw dynamic grid of inputs
-function generateGrid(container, prefix, size) {
+function generateGrid(container, prefix, rows, cols) {
   if (!container) return;
   
-  container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
   let html = '';
   
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       // Set some initial values
       let initVal = 0;
-      if (prefix === 'A') {
-        if (r === c) initVal = 1; // Default A to Identity
-      } else {
-        if (r === c) initVal = 2; // Default B to 2 * Identity
+      if (r === c) {
+        initVal = prefix === 'A' ? 1 : 2; // Default A/B diagonal
       }
       
       html += `<input type="number" id="mat${prefix}_${r}_${c}" value="${initVal}">`;
@@ -87,12 +93,13 @@ function generateGrid(container, prefix, size) {
 
 // Read inputs into 2D Array
 function getMatrixValues(prefix) {
-  const size = parseInt(prefix === 'A' ? matrixASizeSelect.value : matrixBSizeSelect.value);
+  const rows = parseInt(prefix === 'A' ? matrixARowsSelect.value : matrixBRowsSelect.value);
+  const cols = parseInt(prefix === 'A' ? matrixAColsSelect.value : matrixBColsSelect.value);
   const mat = [];
   
-  for (let r = 0; r < size; r++) {
+  for (let r = 0; r < rows; r++) {
     const row = [];
-    for (let c = 0; c < size; c++) {
+    for (let c = 0; c < cols; c++) {
       const val = parseFloat(document.getElementById(`mat${prefix}_${r}_${c}`).value);
       row.push(isNaN(val) ? 0 : val);
     }
@@ -104,19 +111,21 @@ function getMatrixValues(prefix) {
 
 // Quick action: Clear
 function fillMatrix(prefix, val) {
-  const size = parseInt(prefix === 'A' ? matrixASizeSelect.value : matrixBSizeSelect.value);
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  const rows = parseInt(prefix === 'A' ? matrixARowsSelect.value : matrixBRowsSelect.value);
+  const cols = parseInt(prefix === 'A' ? matrixAColsSelect.value : matrixBColsSelect.value);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       document.getElementById(`mat${prefix}_${r}_${c}`).value = val;
     }
   }
 }
 
-// Quick action: Identity
+// Quick action: Identity (1 on diagonal, 0 elsewhere)
 function makeIdentity(prefix) {
-  const size = parseInt(prefix === 'A' ? matrixASizeSelect.value : matrixBSizeSelect.value);
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  const rows = parseInt(prefix === 'A' ? matrixARowsSelect.value : matrixBRowsSelect.value);
+  const cols = parseInt(prefix === 'A' ? matrixAColsSelect.value : matrixBColsSelect.value);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       document.getElementById(`mat${prefix}_${r}_${c}`).value = r === c ? 1 : 0;
     }
   }
@@ -124,9 +133,10 @@ function makeIdentity(prefix) {
 
 // Quick action: Random integers [-9, 9]
 function fillMatrixRandom(prefix) {
-  const size = parseInt(prefix === 'A' ? matrixASizeSelect.value : matrixBSizeSelect.value);
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  const rows = parseInt(prefix === 'A' ? matrixARowsSelect.value : matrixBRowsSelect.value);
+  const cols = parseInt(prefix === 'A' ? matrixAColsSelect.value : matrixBColsSelect.value);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       const rand = Math.floor(Math.random() * 19) - 9; // -9 to 9
       document.getElementById(`mat${prefix}_${r}_${c}`).value = rand;
     }
@@ -136,12 +146,18 @@ function fillMatrixRandom(prefix) {
 // Display output matrix HTML
 function formatResultMatrix(mat) {
   const rows = mat.length;
-  const cols = mat[0].length;
+  // If mat is a 1D array returned by transposing 1xN, math.js might return it. 
+  // Let's standardise to 2D
+  let matrix2D = Array.isArray(mat[0]) ? mat : [mat];
   
-  let html = `<div class="result-matrix" style="grid-template-columns: repeat(${cols}, auto)">`;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const formatted = math.format(mat[r][c], { precision: 6 });
+  // Transpose of 1D array can happen, ensure standard rows/cols count
+  const formattedRows = matrix2D.length;
+  const formattedCols = matrix2D[0].length;
+  
+  let html = `<div class="result-matrix" style="grid-template-columns: repeat(${formattedCols}, auto)">`;
+  for (let r = 0; r < formattedRows; r++) {
+    for (let c = 0; c < formattedCols; c++) {
+      const formatted = math.format(matrix2D[r][c], { precision: 6 });
       html += `<div class="result-cell">${formatted}</div>`;
     }
   }
@@ -151,43 +167,51 @@ function formatResultMatrix(mat) {
 
 // Run Operations
 function solveMatrixOp(op) {
-  const sizeA = parseInt(matrixASizeSelect.value);
-  const sizeB = parseInt(matrixBSizeSelect.value);
-  const A = getMatrixValues('A');
+  const rowsA = parseInt(matrixARowsSelect.value);
+  const colsA = parseInt(matrixAColsSelect.value);
+  const rowsB = parseInt(matrixBRowsSelect.value);
+  const colsB = parseInt(matrixBColsSelect.value);
   
+  const A = getMatrixValues('A');
   let resultHTML = '';
   
   try {
     if (op === 'add') {
-      if (sizeA !== sizeB) {
-        throw new Error("Matrix dimensions must match for addition (A and B sizes must be equal).");
+      if (rowsA !== rowsB || colsA !== colsB) {
+        throw new Error(`Dimensions must match for addition. Matrix A is ${rowsA}x${colsA}, Matrix B is ${rowsB}x${colsB}.`);
       }
       const B = getMatrixValues('B');
       const res = math.add(A, B);
       resultHTML = `<h5>Matrix A + B Result:</h5>` + formatResultMatrix(res);
     } 
     else if (op === 'sub') {
-      if (sizeA !== sizeB) {
-        throw new Error("Matrix dimensions must match for subtraction (A and B sizes must be equal).");
+      if (rowsA !== rowsB || colsA !== colsB) {
+        throw new Error(`Dimensions must match for subtraction. Matrix A is ${rowsA}x${colsA}, Matrix B is ${rowsB}x${colsB}.`);
       }
       const B = getMatrixValues('B');
       const res = math.subtract(A, B);
       resultHTML = `<h5>Matrix A - B Result:</h5>` + formatResultMatrix(res);
     } 
     else if (op === 'mul') {
-      if (sizeA !== sizeB) {
-        throw new Error("Currently, operations are configured for square matrices, Matrix sizes must match.");
+      if (colsA !== rowsB) {
+        throw new Error(`Inner dimensions must match for multiplication. Matrix A columns (${colsA}) must equal Matrix B rows (${rowsB}).`);
       }
       const B = getMatrixValues('B');
       const res = math.multiply(A, B);
       resultHTML = `<h5>Matrix A × B Result:</h5>` + formatResultMatrix(res);
     } 
     else if (op === 'det') {
+      if (rowsA !== colsA) {
+        throw new Error(`Matrix must be square to compute determinant. Current size: ${rowsA}x${colsA}.`);
+      }
       const res = math.det(A);
       resultHTML = `<h5>Determinant of A:</h5>
         <div class="solution-final">det(A) = ${math.format(res, { precision: 8 })}</div>`;
     } 
     else if (op === 'inv') {
+      if (rowsA !== colsA) {
+        throw new Error(`Matrix must be square to compute inverse. Current size: ${rowsA}x${colsA}.`);
+      }
       const det = math.det(A);
       if (Math.abs(det) < 1e-12) {
         throw new Error("Determinant is 0; Matrix is singular and cannot be inverted.");
@@ -208,16 +232,12 @@ function solveMatrixOp(op) {
         </p>`;
     } 
     else if (op === 'eigen') {
-      // math.eigs returns eigenvalues/eigenvectors for real symmetric matrices
-      // To prevent crashes on non-symmetric matrices, we trap errors
+      if (rowsA !== colsA) {
+        throw new Error(`Matrix must be square to calculate eigenvalues. Current size: ${rowsA}x${colsA}.`);
+      }
       try {
         const res = math.eigs(A);
-        let vals;
-        if (res && res.values) {
-          vals = res.values;
-        } else {
-          vals = res;
-        }
+        let vals = res.values || res;
         
         let eigenValsText = '';
         if (Array.isArray(vals)) {
@@ -231,7 +251,6 @@ function solveMatrixOp(op) {
         resultHTML = `<h5>Eigenvalues (Real Symmetric/Approximated):</h5>
           <div class="solution-final">${eigenValsText}</div>`;
       } catch (eigErr) {
-        // If not symmetric, math.js eigs might fail. Show message.
         resultHTML = `<h5>Eigenvalues:</h5>
           <div class="solution-step" style="color: var(--accent-danger)">
             <strong>Note:</strong> math.js native eigenvalue solver is limited to real symmetric matrices. For non-symmetric matrices, eigenvalues may be complex or require manual calculation.

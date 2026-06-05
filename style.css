@@ -429,12 +429,24 @@ body::after {
   width: 100%;
 }
 
+.scientific-pad {
+  grid-template-columns: repeat(5, 1fr) !important;
+}
+
+.scientific-pad .zero {
+  grid-column: span 2 !important;
+}
+
+.scientific-pad .equals {
+  grid-column: span 2 !important;
+}
+
 .basic-pad {
   grid-template-columns: repeat(4, 1fr);
 }
 
-.keypad-grid.hidden {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 /* Buttons Styling */
@@ -914,7 +926,7 @@ textarea.form-control {
   align-self: flex-start;
 }
 
-.calc-tab {
+.calc-tab, .ratio-tab, .higher-tab {
   border: none;
   background: transparent;
   padding: 8px 16px;
@@ -929,7 +941,7 @@ textarea.form-control {
   gap: 8px;
 }
 
-.calc-tab.active {
+.calc-tab.active, .ratio-tab.active, .higher-tab.active {
   background: var(--text-light);
   color: var(--accent-primary);
   box-shadow: var(--shadow-sm);
