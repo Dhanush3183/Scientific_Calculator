@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     // If a text input field is focused, let normal input happen
     const activeEl = document.activeElement;
-    const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+    const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA') && activeEl.id !== 'generalDisplay';
 
     if (isInputFocused) {
       // If it's a number/operator inside a matrix or other field, let it work normally

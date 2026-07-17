@@ -92,75 +92,108 @@ export function initGeneral() {
 export function handleInput(val) {
   if (!val) return;
 
+  // Use the native selection of the input element, or default to end
+  let start = display.selectionStart ?? expression.length;
+  let end = display.selectionEnd ?? expression.length;
+
   if (val === 'clear') {
     expression = '0';
     historyPreview.textContent = '';
     shouldReset = false;
+    updateDisplay();
+    display.focus();
+    display.setSelectionRange(1, 1);
+    return;
   } else if (val === 'backspace') {
     if (expression === 'Error' || expression === 'Syntax Error' || expression === 'Infinity' || expression === 'NaN') {
       expression = '0';
+      start = 1; end = 1;
     } else {
-      expression = expression.slice(0, -1);
-      if (expression === '') expression = '0';
+      if (start === end && start > 0) {
+        expression = expression.slice(0, start - 1) + expression.slice(start);
+        start--;
+      } else if (start !== end) {
+        expression = expression.slice(0, start) + expression.slice(end);
+      }
+      if (expression === '') {
+        expression = '0';
+        start = 1;
+      }
+      end = start;
     }
   } else if (val === 'equals') {
     evaluateExpression();
+    return;
   } else if (val === 'parentheses') {
     // Context-smart parenthesis insert for Basic pad
     const openCount = (expression.match(/\(/g) || []).length;
     const closeCount = (expression.match(/\)/g) || []).length;
-    const lastChar = expression.slice(-1);
+    const prevChar = start > 0 ? expression.slice(start - 1, start) : '';
     
-    if (expression === '0') {
+    let insertStr = '';
+    if (expression === '0' || expression === 'Error' || expression === 'Syntax Error') {
       expression = '(';
-    } else if (openCount > closeCount && !isNaN(lastChar) && lastChar !== '(') {
-      expression += ')';
-    } else if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/' || lastChar === '(') {
-      expression += '(';
+      start = 1;
+    } else if (openCount > closeCount && !isNaN(prevChar) && prevChar !== '(' && prevChar !== ' ') {
+      insertStr = ')';
+    } else if (['+', '-', '×', '÷', '('].includes(prevChar)) {
+      insertStr = '(';
     } else {
-      expression += '*('; // Implicit multiplication
+      insertStr = '×('; // Implicit multiplication
     }
+    
+    if (insertStr) {
+      expression = expression.slice(0, start) + insertStr + expression.slice(end);
+      start += insertStr.length;
+    }
+    end = start;
   } else {
-    // If screen is showing 0 or error, or we just evaluated, overwrite it under certain conditions
+    // Convert to nice characters right away
+    let insertStr = val
+      .replace(/\*/g, '×')
+      .replace(/\//g, '÷')
+      .replace(/pi/g, 'π')
+      .replace(/phi/g, 'φ')
+      .replace(/sin\^-1\(/g, 'sin⁻¹(')
+      .replace(/cos\^-1\(/g, 'cos⁻¹(')
+      .replace(/tan\^-1\(/g, 'tan⁻¹(');
+
     if (expression === '0' || expression === 'Error' || expression === 'Syntax Error' || shouldReset) {
       // If we just evaluated and type an operator, append to the result
-      if (shouldReset && ['+', '-', '*', '/', '^', '%'].includes(val)) {
+      if (shouldReset && ['+', '-', '×', '÷', '^', '%'].includes(insertStr)) {
         shouldReset = false;
       } else {
         expression = '';
+        start = 0; end = 0;
         shouldReset = false;
       }
     }
     
-    // Auto insert multiplier for e.g. "5pi" or "5("
-    const lastChar = expression.slice(-1);
+    // Auto insert multiplier for e.g. "5π" or "5("
+    const prevChar = start > 0 ? expression.slice(start - 1, start) : '';
     const isNum = (c) => !isNaN(c) && c !== ' ';
     
-    if (expression.length > 0 && isNum(lastChar)) {
-      if (val === 'pi' || val === 'e' || val === 'phi' || val.includes('(')) {
-        expression += '*';
+    if (expression.length > 0 && isNum(prevChar)) {
+      if (insertStr === 'π' || insertStr === 'e' || insertStr === 'φ' || insertStr.includes('(')) {
+        insertStr = '×' + insertStr;
       }
     }
     
-    expression += val;
+    expression = expression.slice(0, start) + insertStr + expression.slice(end);
+    start += insertStr.length;
+    end = start;
   }
 
   updateDisplay();
+  
+  // Set cursor
+  display.focus();
+  display.setSelectionRange(start, start);
 }
 
 // Update the display screen
 function updateDisplay() {
-  // Convert standard math operators to nice screen signs
-  let displayHTML = expression
-    .replace(/\*/g, '×')
-    .replace(/\//g, '÷')
-    .replace(/pi/g, 'π')
-    .replace(/phi/g, 'φ')
-    .replace(/sin\^-1\(/g, 'sin⁻¹(')
-    .replace(/cos\^-1\(/g, 'cos⁻¹(')
-    .replace(/tan\^-1\(/g, 'tan⁻¹(');
-
-  display.textContent = displayHTML;
+  display.value = expression;
 }
 
 // Compute the evaluation using math.js
@@ -169,12 +202,16 @@ function evaluateExpression() {
   
   // Translate visual tokens to math.js functions prior to evaluation
   let evalExpr = expression
-    .replace(/sin\^-1\(/g, 'asin(')
-    .replace(/cos\^-1\(/g, 'acos(')
-    .replace(/tan\^-1\(/g, 'atan(')
+    .replace(/×/g, '*')
+    .replace(/÷/g, '/')
+    .replace(/π/g, 'pi')
+    .replace(/φ/g, 'phi')
     .replace(/sin⁻¹\(/g, 'asin(')
     .replace(/cos⁻¹\(/g, 'acos(')
-    .replace(/tan⁻¹\(/g, 'atan(');
+    .replace(/tan⁻¹\(/g, 'atan(')
+    .replace(/sin\^-1\(/g, 'asin(')
+    .replace(/cos\^-1\(/g, 'acos(')
+    .replace(/tan\^-1\(/g, 'atan(');
   
   // Basic bracket auto-completion
   const openCount = (evalExpr.match(/\(/g) || []).length;
@@ -211,11 +248,13 @@ function evaluateExpression() {
     
     expression = formattedResult;
     shouldReset = true;
+    updateDisplay();
   } catch (error) {
     console.error("MathJS Evaluation Error:", error);
     historyPreview.textContent = expression + ' =';
     expression = 'Syntax Error';
     shouldReset = true;
+    updateDisplay();
   }
 }
 
@@ -264,39 +303,49 @@ export function handleGeneralKeyboard(e) {
 
   // Numbers 0-9
   if (/[0-9]/.test(key)) {
+    e.preventDefault();
     handleInput(key);
     animateKeyButton(key);
   }
   // Decimal point
   else if (key === '.') {
+    e.preventDefault();
     handleInput('.');
     animateKeyButton('.');
   }
   // Math operators
   else if (key === '+') {
+    e.preventDefault();
     handleInput('+');
     animateKeyButton('+');
   } else if (key === '-') {
+    e.preventDefault();
     handleInput('-');
     animateKeyButton('-');
   } else if (key === '*') {
+    e.preventDefault();
     handleInput('*');
     animateKeyButton('*');
   } else if (key === '/') {
+    e.preventDefault();
     handleInput('/');
     animateKeyButton('/');
   } else if (key === '%') {
+    e.preventDefault();
     handleInput('%');
     animateKeyButton('%');
   } else if (key === '^') {
+    e.preventDefault();
     handleInput('^');
     animateKeyButton('^');
   }
   // Parentheses
   else if (key === '(') {
+    e.preventDefault();
     handleInput('(');
     animateKeyButton('(');
   } else if (key === ')') {
+    e.preventDefault();
     handleInput(')');
     animateKeyButton(')');
   }
@@ -308,11 +357,13 @@ export function handleGeneralKeyboard(e) {
   }
   // Backspace / Delete
   else if (key === 'Backspace') {
+    e.preventDefault();
     handleInput('backspace');
     animateKeyButton('backspace');
   }
   // Clear (Escape / C)
   else if (key === 'Escape' || key.toLowerCase() === 'c') {
+    e.preventDefault();
     handleInput('clear');
     animateKeyButton('clear');
   }
